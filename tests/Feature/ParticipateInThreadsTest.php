@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery\Exception;
 
 class ParticipateInThreadsTest extends TestCase
 {
@@ -123,5 +124,26 @@ class ParticipateInThreadsTest extends TestCase
         $this->signIn()
             ->patch("/replies/{$reply->id}")
             ->assertStatus(403);
+    }
+
+    /**
+     * @test
+     */
+    public function replies_that_contain_spam_may_not_be_created()
+    {
+        $this->signIn();
+
+        // E um thread existente
+        $thread = create('App\Thread');
+        
+        // Quando o usuário postar uma reply para a thread contendo spam
+        $reply = make('App\Reply', [
+            'thread_id' => $thread->id,
+            'body' => 'Yahoo Customer Support'
+        ]);
+
+        $this->expectException(\Exception::class);
+
+        $this->post($thread->path() . '/replies', $reply->toArray());
     }
 }

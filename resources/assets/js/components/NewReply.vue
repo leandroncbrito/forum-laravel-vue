@@ -27,8 +27,11 @@ export default {
             axios.post(location.pathname + '/replies', { body: this.body })
                 .then(response => {
                     this.body = '';
-                    flash('Your reply has been posted');
                     this.$emit('created', response.data);
+                    flash('Your reply has been posted');
+                })
+                .catch(error => {
+                    flash(error.response.data, 'danger');
                 });
         }
     }
