@@ -61003,7 +61003,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.$emit('created', response.data);
                 flash('Your reply has been posted');
             }).catch(function (error) {
-                flash(error.response.data.message, 'danger');
+                flash(error.response.data, 'danger');
             });
         }
     }
