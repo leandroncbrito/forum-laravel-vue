@@ -7,6 +7,7 @@ use App\Channel;
 use App\Filters\ThreadFilters;
 use Illuminate\Http\Request;
 use App\User;
+use Carbon\Carbon;
 
 class ThreadController extends Controller
 {
@@ -85,6 +86,11 @@ class ThreadController extends Controller
      */
     public function show($channelId, Thread $thread)
     {
+        if (auth()->check()) {
+            // Salva a visita do usuário para armazenar em cache
+            auth()->user()->read($thread);
+        }
+
         return view('threads.show', compact('thread'));
     }
 
