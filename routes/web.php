@@ -32,6 +32,7 @@ Route::post('/threads', 'ThreadController@store');
 
 Route::get('/threads/{channel}/{thread}/replies', 'ReplyController@index');
 
+//middleware('throttle:1') pode ser usado para não permitir requisições em menos de 1 minuto de intervalo, porém a validação atrapalha o funcionamento
 Route::post('/threads/{channel}/{thread}/replies', 'ReplyController@store');
 
 Route::delete('/threads/{channel}/{thread}', 'ThreadController@destroy');

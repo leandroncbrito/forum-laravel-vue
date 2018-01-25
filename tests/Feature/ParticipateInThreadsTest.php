@@ -146,4 +146,27 @@ class ParticipateInThreadsTest extends TestCase
 
         $this->post($thread->path() . '/replies', $reply->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $this->signIn();
+
+        // E um thread existente
+        $thread = create('App\Thread');
+        
+        // Quando o usuário postar uma reply para a thread contendo spam
+        $reply = make('App\Reply', [
+            'thread_id' => $thread->id,
+            'body' => 'My simple reply'
+        ]);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(200);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+             ->assertStatus(422);
+    }
 }

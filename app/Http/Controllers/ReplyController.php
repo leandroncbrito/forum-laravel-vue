@@ -7,6 +7,7 @@ use App\Thread;
 use App\Reply;
 use Mockery\CountValidator\Exception;
 use App\Rules\SpamFree;
+use Illuminate\Support\Facades\Gate;
 
 class ReplyController extends Controller
 {
@@ -22,15 +23,24 @@ class ReplyController extends Controller
 
     public function store($channelId, Thread $thread)
     {
-        request()->validate([
-            'body' => ['required', new SpamFree]
-        ]);
+        //$this->authorize('create', new Reply);
+        // Delegate para a ReplyPolicy@create
+        if (Gate::denies('create', new Reply)) {
+            return response(
+                'Your are posting too frequently. Please take a break. :)',
+                422
+            );
+        }
 
-        $reply = $thread->addReply([
-            'body' => request('body'),
-            'user_id' => auth()->id()
-        ]);
+        request()->validate([
+                'body' => ['required', new SpamFree]
+            ]);
     
+        $reply = $thread->addReply([
+                'body' => request('body'),
+                'user_id' => auth()->id()
+            ]);
+        
         return $reply->load('owner');
     }
 
