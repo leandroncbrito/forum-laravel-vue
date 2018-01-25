@@ -31,7 +31,7 @@ export default {
                     flash('Your reply has been posted');
                 })
                 .catch(error => {
-                    flash(error.response.data, 'danger');
+                    flash(error.response.data.message, 'danger');
                 });
         }
     }
