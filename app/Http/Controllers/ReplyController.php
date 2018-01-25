@@ -9,6 +9,8 @@ use Mockery\CountValidator\Exception;
 use App\Rules\SpamFree;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\CreatePostRequest;
+use App\Notifications\YouWereMentioned;
+use App\User;
 
 class ReplyController extends Controller
 {
@@ -24,10 +26,24 @@ class ReplyController extends Controller
 
     public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
-        return $thread->addReply([
+        $reply = $thread->addReply([
                 'body' => request('body'),
                 'user_id' => auth()->id()
             ])->load('owner');
+
+
+        preg_match_all('/\@([^\s\.]+)/', $reply->body, $matches);
+
+        $names = $matches[1];
+
+        foreach ($names as $name) {
+            $user = User::whereName($name)->first();
+            if ($user) {
+                $user->notify(new YouWereMentioned($reply));
+            }
+        }
+
+        return $reply->load('owner');
     }
 
     public function update(Reply $reply)
