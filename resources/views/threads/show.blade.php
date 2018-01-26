@@ -8,7 +8,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="level">                            
-                            <img src="{{ $thread->creator->avatar() }}" 
+                            <img src="{{ $thread->creator->avatar_path }}" 
                                 alt="{{ $thread->creator->name }}" width="50" height="50" class="mr-1">
 
                             <span class="flex">
