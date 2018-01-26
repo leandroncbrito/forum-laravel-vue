@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Notifications\ThreadWasUpdated;
 use App\Events\ThreadReceivedNewReply;
+use Illuminate\Support\Facades\Redis;
 
 class Thread extends Model
 {
@@ -91,6 +92,11 @@ class Thread extends Model
     public function subscriptions()
     {
         return $this->hasMany(ThreadSubscription::class);
+    }
+
+    public function visits()
+    {
+        return new Visits($this);
     }
 
     public function scopeFilter($query, $filters)
