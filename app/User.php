@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'avatar_path'
     ];
 
     /**
@@ -36,6 +36,11 @@ class User extends Authenticatable
     public function threads()
     {
         return $this->hasMany(Thread::class)->latest();
+    }
+
+    public function avatar()
+    {
+        return asset($this->avatar_path ? "/storage/{$this->avatar_path}"  : "/storage/avatars/noimage.png");
     }
 
     public function activity()
