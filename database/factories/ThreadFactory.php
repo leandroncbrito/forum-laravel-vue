@@ -22,6 +22,7 @@ $factory->define(App\Thread::class, function (Faker $faker) {
         },
         'user_id'=> function () {
             return factory('App\User')->create()->id;
-        }
+        },
+        'visits' => 0
     ];
 });

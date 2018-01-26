@@ -94,10 +94,11 @@ class Thread extends Model
         return $this->hasMany(ThreadSubscription::class);
     }
 
-    public function visits()
-    {
-        return new Visits($this);
-    }
+    // Usado para implentação com a Classe Visits
+    // public function visits()
+    // {
+    //     return new Visits($this);
+    // }
 
     public function scopeFilter($query, $filters)
     {
