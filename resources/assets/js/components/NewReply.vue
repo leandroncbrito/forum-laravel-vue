@@ -6,7 +6,7 @@
         <button type="submit" class="btn btn-default" @click="addReply">Post</button>
     </div>
     <p class="text-center" v-else>Please
-        <a href="">sign in</a> to participate in this discussion.</p>
+        <a href="/login">sign in</a> to participate in this discussion.</p>
 </template>
 
 <script>
