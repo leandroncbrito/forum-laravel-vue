@@ -20,7 +20,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::resource('/threads', 'ThreadController');
 
-Route::get('/threads', 'ThreadController@index');
+Route::get('/threads', 'ThreadController@index')->name('threads');
 
 Route::get('/threads/create', 'ThreadController@create');
 
@@ -58,7 +58,7 @@ Route::get('/profiles/{user}/notifications', 'UserNotificationController@index')
 
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationController@destroy');
 
-Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index');
+Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
 
 
 Route::post('/api/users/{user}/avatar', 'Api\UserAvatarController@store')->middleware('auth')->name('avatar');

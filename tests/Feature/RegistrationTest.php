@@ -21,7 +21,12 @@ class RegistrationTest extends TestCase
     {
         Mail::fake();
 
-        event(new Registered(create('App\User')));
+        $this->post(route('register'), [
+            'name' => 'Leandro',
+            'email' => 'leandroncbrito-53c3b4@inbox.mailtrap.io',
+            'password' => 'foobar',
+            'password_confirmation' => 'foobar'
+        ]);
 
         Mail::assertSent(PleaseConfirmYourEmail::class);
     }
@@ -32,7 +37,9 @@ class RegistrationTest extends TestCase
      */
     public function user_can_fully_confirm_their_email_addresses()
     {
-        $this->post('/register', [
+        Mail::fake();
+
+        $this->post(route('register'), [
             'name' => 'Leandro',
             'email' => 'leandroncbrito-53c3b4@inbox.mailtrap.io',
             'password' => 'foobar',
@@ -45,10 +52,23 @@ class RegistrationTest extends TestCase
 
         $this->assertNotNull($user->confirmation_token);
 
-        $response = $this->get('/register/confirm?token=' . $user->confirmation_token);
+        $this->get(route('register.confirm', ['token' => $user->confirmation_token]))
+            ->assertRedirect(route('threads'));
+            
+        tap($user->fresh(), function ($user) {
+            $this->assertTrue($user->confirmed);
 
-        $this->assertTrue($user->fresh()->confirmed);
+            $this->assertNull($user->confirmation_token);
+        });
+    }
 
-        $response->assertRedirect('/threads');
+    /**
+     * @test
+     */
+    public function confirming_an_invalid_token()
+    {
+        $this->get(route('register.confirm', ['token' => 'invalid']))
+            ->assertRedirect(route('threads'))
+            ->assertSessionHas('flash');
     }
 }
