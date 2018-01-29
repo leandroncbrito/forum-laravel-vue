@@ -32,9 +32,14 @@ class Thread extends Model
         });
     }
 
+    public function getRouteKeyName(Type $var = null)
+    {
+        return 'slug';
+    }
+    
     public function path()
     {
-        return "/threads/{$this->channel->slug}/{$this->id}";
+        return "/threads/{$this->channel->slug}/{$this->slug}";
     }
 
     public function replies()
@@ -110,6 +115,28 @@ class Thread extends Model
         $key = $user->visitedThreadCacheKey($this);
 
         return $this->updated_at > cache($key);
+    }
+
+    private function incrementSlug($slug)
+    {
+        $max = static::whereTitle($this->title)->latest('id')->value('slug'); //teste ou teste-1
+
+        if (is_numeric($max[-1])) {
+            return preg_replace_callback('/(\d+)$/', function ($matches) {
+                return $matches[1] + 1;
+            }, $max);
+        }
+
+        return "{$slug}-2";
+    }
+
+    public function setSlugAttribute($value)
+    {
+        if (static::whereSlug($slug = str_slug($value))->exists()) {
+            $slug = $this->incrementSlug($slug);
+        }
+
+        $this->attributes['slug'] = $slug;
     }
 
     public function getIsSubscribedToAttribute()
