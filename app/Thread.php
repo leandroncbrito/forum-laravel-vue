@@ -58,7 +58,6 @@ class Thread extends Model
 
         event(new ThreadReceivedNewReply($reply));
 
-
         // Enviando notificação de maneira mais simples
         //$this->notifySubscribers($reply);
 
@@ -99,16 +98,6 @@ class Thread extends Model
         return $this->hasMany(ThreadSubscription::class);
     }
 
-    // Usado para implentação com a Classe Visits
-    // public function visits()
-    // {
-    //     return new Visits($this);
-    // }
-
-    public function scopeFilter($query, $filters)
-    {
-        return $filters->apply($query);
-    }
 
     public function hasUpdatesFor($user)
     {
@@ -117,23 +106,19 @@ class Thread extends Model
         return $this->updated_at > cache($key);
     }
 
-    private function incrementSlug($slug)
+    public function scopeFilter($query, $filters)
     {
-        $max = static::whereTitle($this->title)->latest('id')->value('slug'); //teste ou teste-1
-
-        if (is_numeric($max[-1])) {
-            return preg_replace_callback('/(\d+)$/', function ($matches) {
-                return $matches[1] + 1;
-            }, $max);
-        }
-
-        return "{$slug}-2";
+        return $filters->apply($query);
     }
 
     public function setSlugAttribute($value)
     {
-        if (static::whereSlug($slug = str_slug($value))->exists()) {
-            $slug = $this->incrementSlug($slug);
+        $slug = str_slug($value);
+        $original = $slug;
+        $count =2;
+
+        while (static::whereSlug($slug)->exists()) {
+            $slug = "{$original}-" . $count++;
         }
 
         $this->attributes['slug'] = $slug;
@@ -145,4 +130,33 @@ class Thread extends Model
                     ->where('user_id', auth()->id())
                     ->exists();
     }
+
+    // Usado para implentação com a Classe Visits
+    // public function visits()
+    // {
+    //     return new Visits($this);
+    // }
+
+
+    // Método desnecessário, pode ser feito tudo no setSlugAttribute
+    // private function incrementSlug($slug, $count = 2)
+    // {
+    //     $original = $slug;
+
+    //     while (static::whereSlug($slug)->exists()) {
+    //         $slug = "{$original}-" . $count++;
+    //     }
+
+    //     return $slug;
+
+    //     // $max = static::whereTitle($this->title)->latest('id')->value('slug'); //teste ou teste-1
+
+    //     // if (is_numeric($max[-1])) {
+    //     //     return preg_replace_callback('/(\d+)$/', function ($matches) {
+    //     //         return $matches[1] + 1;
+    //     //     }, $max);
+    //     // }
+
+    //     // return "{$slug}-2";
+    // }
 }

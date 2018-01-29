@@ -95,6 +95,19 @@ class CreateThreadsTest extends TestCase
 
         $this->assertTrue(Thread::whereSlug('foo-title-3')->exists());
     }
+    /**
+     * @test
+     */
+    public function a_thread_with_a_title_that_ends_in_a_number_should_generate_the_proper_slug()
+    {
+        $this->signIn();
+
+        $thread = create('App\Thread', ['title' => 'Some Title 24', 'slug' => 'some-title-24']);
+
+        $this->post(route('threads'), $thread->toArray());
+
+        $this->assertTrue(Thread::whereSlug('some-title-24-2')->exists());
+    }
 
     /**
      * @test
