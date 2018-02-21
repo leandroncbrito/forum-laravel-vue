@@ -44,7 +44,7 @@ Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionCo
 
 Route::patch('/replies/{reply}', 'ReplyController@update');
 
-Route::delete('/replies/{reply}', 'ReplyController@destroy');
+Route::delete('/replies/{reply}', 'ReplyController@destroy')->name('replies.destroy');
 
 Route::post('/replies/{reply}/best', 'BestReplyController@store')->name('best-reply.store');
 

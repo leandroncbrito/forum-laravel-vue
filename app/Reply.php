@@ -15,7 +15,7 @@ class Reply extends Model
     protected $with = ['owner', 'favorites'];
     
     // Anexa as propriedades no retorno
-    protected $appends = ['favoritesCount', 'isFavorited'];
+    protected $appends = ['favoritesCount', 'isFavorited', 'isBest'];
 
     protected static function boot()
     {
@@ -26,6 +26,10 @@ class Reply extends Model
         });
 
         static::deleted(function ($reply) {
+            // if ($reply->isBest()) {
+            //     $reply->thread->update(['best_reply_id' => null]);
+            // }
+            
             $reply->thread->decrement('replies_count');
         });
     }
@@ -55,6 +59,11 @@ class Reply extends Model
     public function setBodyAttribute($body)
     {
         $this->attributes['body'] = preg_replace('/@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);
+    }
+
+    public function getIsBestAttribute()
+    {
+        return $this->isBest();
     }
 
     public function path()
