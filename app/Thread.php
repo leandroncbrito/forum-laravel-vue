@@ -131,6 +131,11 @@ class Thread extends Model
                     ->exists();
     }
 
+    public function markBestReply(Reply $reply)
+    {
+        $reply->thread->update(['best_reply_id' => $reply->id]);
+    }
+
     // Usado para implentação com a Classe Visits
     // public function visits()
     // {

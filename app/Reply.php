@@ -61,4 +61,9 @@ class Reply extends Model
     {
         return $this->thread->path() . "#reply-{$this->id}";
     }
+
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
+    }
 }

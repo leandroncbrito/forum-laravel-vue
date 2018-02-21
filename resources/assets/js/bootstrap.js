@@ -56,13 +56,20 @@ if (token) {
 
 window.events = new Vue();
 
-window.Vue.prototype.authorize = function (handler) {
+let authorizations = require('./authorizations');
+
+window.Vue.prototype.authorize = function (...params) {
     // Privilégios adicionais do admin
+    if (! window.App.signedIn) return false;
 
-    let user = window.App.user;
+    if (typeof params[0] === 'string') {
+        return authorizations[params[0]](params[1]);
+    }
 
-    return user ? handler(user) : false;
+    return params[0](window.App.user);
 };
+
+Vue.prototype.signedIn = window.App.signedIn;
 
 window.flash = function (message, level = 'success') {
     window.events.$emit('flash', { message, level });
