@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <button class="btn" :class="classes" @click="subscribe">Subscribe</button>
-    </div>
+    <button class="btn" :class="classes" @click="subscribe">Subscribe</button>
 </template>
 
 <script>

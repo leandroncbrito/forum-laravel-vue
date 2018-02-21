@@ -37,6 +37,11 @@ class User extends Authenticatable
         return 'name';
     }
 
+    public function isAdmin()
+    {
+        return in_array($this->name, ['leandroncbrito']);
+    }
+
     public function confirm()
     {
         $this->confirmed = true;

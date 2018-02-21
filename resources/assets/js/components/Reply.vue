@@ -8,7 +8,7 @@
                     <span v-text="ago"></span>
                 </h5>
                 <div v-if="signedIn">
-                    <favorite :reply="data"></favorite>
+                    <favorite :reply="reply"></favorite>
                 </div>
             </div>
         </div>

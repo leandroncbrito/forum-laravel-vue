@@ -26,6 +26,7 @@ $factory->define(App\Thread::class, function (Faker $faker) {
             return factory('App\User')->create()->id;
         },
         'visits' => 0,
-        'slug' => str_slug($title)
+        'slug' => str_slug($title),
+        'locked' => false
     ];
 });

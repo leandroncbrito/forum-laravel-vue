@@ -13,10 +13,15 @@ class Thread extends Model
 
     protected $guarded = [];
 
+    // Include
     protected $with = ['creator', 'channel'];
         
     // Anexa as propriedades no retorno
     protected $appends = ['isSubscribedTo'];
+
+    protected $casts = [
+        'locked' => 'boolean'
+    ];
 
     protected static function boot()
     {

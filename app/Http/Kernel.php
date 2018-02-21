@@ -4,6 +4,7 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\RedirectIfEMailNotConfirmed;
+use App\Http\Middleware\Administrator;
 
 class Kernel extends HttpKernel
 {
@@ -58,6 +59,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'must-be-confirmed' => RedirectIfEMailNotConfirmed::class
+        'must-be-confirmed' => RedirectIfEMailNotConfirmed::class,
+        'admin' => Administrator::class
     ];
 }

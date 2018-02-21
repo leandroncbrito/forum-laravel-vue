@@ -28,6 +28,12 @@ Route::get('/threads/{channel}', 'ThreadController@index');
 
 Route::get('/threads/{channel}/{thread}', 'ThreadController@show');
 
+//Route::patch('/threads/{channel}/{thread}', 'ThreadController@update')->name('threads.update');
+
+Route::post('/locked-threads/{thread}', 'LockedThreadController@store')->name('locked-threads.store')->middleware('admin');
+
+Route::delete('/locked-threads/{thread}', 'LockedThreadController@destroy')->name('locked-threads.destroy')->middleware('admin');
+
 Route::post('/threads', 'ThreadController@store')->middleware('must-be-confirmed');
 
 Route::get('/threads/{channel}/{thread}/replies', 'ReplyController@index');
