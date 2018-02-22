@@ -28,6 +28,9 @@
             display: flex;
             align-items: center;
         }
+        .level-item {
+            margin-left: 1em;
+        }
         .flex {
             flex: 1;
         }
