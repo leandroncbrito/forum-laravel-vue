@@ -7,6 +7,8 @@ use App\Notifications\ThreadWasUpdated;
 use App\Events\ThreadReceivedNewReply;
 use Illuminate\Support\Facades\Redis;
 
+//use Laravel\Scout\Searchable;
+
 class Thread extends Model
 {
     use RecordsActivity;
@@ -41,6 +43,11 @@ class Thread extends Model
     {
         return 'slug';
     }
+
+    // public function toSearchableArray()
+    // {
+    //     return array_only($this->toArray(), ['id', 'title']);
+    // }
     
     public function path()
     {
