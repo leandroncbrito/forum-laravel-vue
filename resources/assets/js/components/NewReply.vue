@@ -1,7 +1,8 @@
 <template>
     <div v-if="signedIn">
         <div class="form-group">
-            <textarea name="body" id="body" class="form-control" placeholder="Have something to say?" rows="5" v-model="body" required></textarea>
+            <wysiwyg name="body" v-model="body" placeholder="Have something to say?" :shouldClear="complete"></wysiwyg>
+            <!-- <textarea name="body" id="body" class="form-control" placeholder="Have something to say?" rows="5" v-model="body" required></textarea> -->
         </div>
         <button type="submit" class="btn btn-default" @click="addReply">Post</button>
     </div>
@@ -14,7 +15,8 @@
 export default {
     data() {
         return {
-            body: ''
+            body: '',
+            complete: false
         };
     },
     methods: {
@@ -22,7 +24,10 @@ export default {
             axios.post(location.pathname + '/replies', { body: this.body })
                 .then(response => {
                     this.body = '';
+                    this.complete = true;
+
                     this.$emit('created', response.data);
+
                     flash('Your reply has been posted');
                 })
                 .catch(error => {

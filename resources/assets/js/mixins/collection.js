@@ -9,8 +9,8 @@ export default {
             this.items.push(item);
             this.$emit('added');
         },
-        remove(index) {
-            this.items.splice(index, 1);
+        remove(index) {            
+            this.items.splice(index, 1);            
             this.$emit('removed');
         },
     },

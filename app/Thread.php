@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Notifications\ThreadWasUpdated;
 use App\Events\ThreadReceivedNewReply;
 use Illuminate\Support\Facades\Redis;
+use Stevebauman\Purify\Purify;
 
 //use Laravel\Scout\Searchable;
 
@@ -141,6 +142,12 @@ class Thread extends Model
         return $this->subscriptions()
                     ->where('user_id', auth()->id())
                     ->exists();
+    }
+
+    // Acessor
+    public function getBodyAttribute($body)
+    {
+        return \Purify::clean($body);
     }
 
     public function markBestReply(Reply $reply)

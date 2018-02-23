@@ -7,7 +7,8 @@
     </div>
     <div class="panel-body">
         <div class="form-group">
-            <textarea rows="10" name="body" v-model="form.body" class="form-control"></textarea>
+            <wysiwyg name="body" v-model="form.body"></wysiwyg>
+            {{--  <textarea rows="10" name="body" v-model="form.body" class="form-control"></textarea>  --}}
         </div>
     </div>
     <div class="panel-footer">
@@ -36,7 +37,7 @@
             </span>
         </div>
     </div>
-    <div class="panel-body" v-text="body"></div>
+    <div class="panel-body" v-html="body"></div>
     <div class="panel-footer" v-if="authorize('owns', thread)">
         <button class="btn btn-xs level-item" @click="editing = true">Edit</button>
     </div>
